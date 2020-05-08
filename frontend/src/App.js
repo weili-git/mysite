@@ -1,12 +1,17 @@
 import * as React from "react";
 import "./App.css";
-import { Layout, Button, Menu, Form, Input, Checkbox, Progress, Icon, Avatar } from 'antd';
-import { MailOutlined, AppstoreOutlined, SettingOutlined } from '@ant-design/icons';
-import { GithubOutlined } from '@ant-design/icons';
+import { Layout,  Menu, Progress, Avatar } from 'antd';
+import { Route, Link } from "react-router-dom";
+
+import { GuidePage } from "./GuidePage/GuidePage";
+import { DataPage } from "./DataPage/DataPage";
+import { ConfigPage } from "./ConfigPage/ConfigPage";
+import { ConvertPage } from "./ConvertPage/ConvertPage";
+import { bhistory } from "./index";
+
+import { GithubOutlined, SettingOutlined, ControlOutlined, PlaySquareOutlined } from '@ant-design/icons';
 
 const { Header, Content, Footer, Sider } = Layout;
-const { SubMenu } = Menu;
-const { Search } = Input;
 
 
 class App extends React.Component {
@@ -31,7 +36,25 @@ class App extends React.Component {
     this.setState({ percent });
   };
 
-  render() {
+  clickMenu = (key) => {
+    if (key=="1") {
+      bhistory.push("/data");
+    }
+    else if(key=="2"){
+      bhistory.push("/config");
+    }
+    else //key==3
+    {
+      bhistory.push("/convert");
+    }
+      
+  };
+
+  clickAvatar = () => {
+    bhistory.push("/");
+  }
+
+  render() {  //
     return (
       <div className="App">
         <Layout>
@@ -39,32 +62,20 @@ class App extends React.Component {
             <Avatar size={64} 
                     style={{float: "left", background: "#000000"}} 
                     icon={<GithubOutlined />}
+                    onClick={this.clickAvatar}
             >
             </Avatar>
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']} style={{float: "left", marginLeft: 20 }}>
-              <Menu.Item key="1">数据预处理</Menu.Item>
-              <Menu.Item key="2">加载模型</Menu.Item>
-              <Menu.Item key="3">测试</Menu.Item>
+            <Menu theme="dark" className="MainMenu" mode="horizontal" defaultSelectedKeys={['1']} style={{float: "left", marginLeft: 20 }} onClick={(item) => this.clickMenu(item.key)   }> 
+              <Menu.Item icon={<SettingOutlined />} key="1">数据预处理</Menu.Item>
+              <Menu.Item icon={<ControlOutlined />} key="2">相关配置</Menu.Item>
+              <Menu.Item icon={<PlaySquareOutlined />} key="3">测试</Menu.Item>
             </Menu>
           </Header>
           <Content style={{padding: 64, height: 1000, marginTop: 64, marginLeft: 200, marginRight: 200}}>
-            <Form>
-              <Form.Item label="数据集路径" rules={[{ required: true, message: 'The dataset path is not valid!' }]}>
-                <Search 
-                        placeholder="input dataset path." 
-                        enterButton="浏览" 
-                        onSearch={value => console.log(value)}>
-                </Search>
-              </Form.Item>
-              <Form.Item> 
-                <Button type="primary" htmlType="submit" onClick={this.increase}>
-                  处理
-                </Button>
-                <Button type="primary" onClick={this.decrease} style={{marginLeft: 10}}>
-                  取消
-                </Button>
-              </Form.Item>
-            </Form>
+            <Route exact path="/" component={GuidePage} />
+            <Route path="/data" component={DataPage} />
+            <Route path="/config" component={ConfigPage} />
+            <Route path="/convert" component={ConvertPage} />
           </Content>
           <Footer>
             <Progress percent={this.state.percent}></Progress>
