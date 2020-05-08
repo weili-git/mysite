@@ -16,8 +16,7 @@ const { Header, Content, Footer, Sider } = Layout;
 
 class App extends React.Component {
   state = {
-    percent: 0,
-    data_dir: "C:/Users/Rain/Desktop/project/AttnGAN/data/birds"
+    percent: 0
   };
 
   increase = () => {

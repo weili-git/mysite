@@ -1,24 +1,37 @@
 import * as React from "react";
-import {Form, Button, Input, } from 'antd';
+import {Form, Button, Select} from 'antd';
 
-const { Search } = Input;
+const { Option } = Select;
+
 
 export class DataPage extends React.Component {
+    state = {
+        dataset: "bird"
+    };
+
+    Selected = (dataset) => {
+        this.setState({ dataset });
+    };
+
+    LoadData = () => {
+        alert(this.state.dataset)
+    };
+
     render() {
         return(
             <div>
                 <Form>
-                    <Form.Item label="数据集路径" rules={[{ required: true, message: 'The dataset path is not valid!' }]}>
-                        <Search placeholder="input dataset path." 
-                                enterButton="浏览" 
-                                onSearch={value => console.log(value)}>
-                        </Search>
+                    <Form.Item label="数据集" >
+                        <Select onChange={(Value) => this.Selected(Value)} defaultValue="bird">
+                            <Option value="bird">bird dataset</Option>
+                            <Option value="coco">coco dataset</Option>
+                        </Select>
                     </Form.Item>
                     <Form.Item> 
-                        <Button type="primary" htmlType="submit" onClick={this.increase}>
+                        <Button type="primary" htmlType="submit" onClick={this.LoadData}>
                         处理
                         </Button>
-                        <Button type="primary" onClick={this.decrease} style={{marginLeft: 10}}>
+                        <Button type="primary" style={{marginLeft: 10}}>
                         取消
                         </Button>
                     </Form.Item>
